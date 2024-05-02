@@ -32,9 +32,6 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 COPY . .
 
-RUN python3 -m venv /app/.venv_docker
-RUN . /app/.venv_docker/bin/activate
-
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 RUN reflex db init
