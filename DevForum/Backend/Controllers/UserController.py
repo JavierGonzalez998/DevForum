@@ -44,7 +44,6 @@ class userAuth(rx.State):
                         )
                     session.commit()
                 self.cleanData()
-                print(encoded_jwt)
                 auth_token.setAuthCookie(encoded_jwt)
             else:
                 self.response = None

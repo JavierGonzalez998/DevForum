@@ -3,6 +3,14 @@ from DevForum.Components.navbar import navbar
 from DevForum.Components.addPost import addPost
 from DevForum.Components.postCard import postCard
 from DevForum.Backend.Controllers.PostController import getUserPost
+from DevForum.States.UserCookies import userCookie
+
+class UserCookieStates(rx.State):
+    token: str
+
+    async def LoadCookie(self):
+        auth = await self.get_state(userCookie)
+        self.token = auth.getAuthCookie()
 
 class HandleRankPost(rx.State):
     async def loadPosts(self):
@@ -21,7 +29,11 @@ def index() -> rx.Component:
                     paddingTop="1rem"
                 ),
                 rx.box(
+                rx.cond(
+                    UserCookieStates.token != "",
                     addPost(),
+                    None
+                ) ,
                     width="100%",
                     display="flex",
                     flexDirection="row",
@@ -53,6 +65,6 @@ def index() -> rx.Component:
         gap="0",
         width="100vw",
         height="100vh",
-        on_mount=HandleRankPost.loadPosts   
+        on_mount=[HandleRankPost.loadPosts, UserCookieStates.LoadCookie]   
     )
 

@@ -17,6 +17,7 @@ class handleCat(rx.State):
     async def loadCat(self):
         cat = await self.get_state(BackendCategory)
         await cat.getAllListCat()
+        print(cat.responseCat)
         self.catList = cat.responseCat
             
         
@@ -50,7 +51,7 @@ def addPost() -> rx.Component:
                     margin_bottom="4px",
                     weight="bold",
                 ),
-                rx.select(handleCat.catList, on_change=getUserPost.set_cat, placeholder="Seleccione una categoría", color_scheme="plum", variant="soft", radius="full"),
+                rx.select(BackendCategory.responseCat, on_change=getUserPost.set_cat, placeholder="Seleccione una categoría", color_scheme="plum", variant="soft", radius="full"),
                 rx.text(
                     "Descripción del post",
                     as_="div",
