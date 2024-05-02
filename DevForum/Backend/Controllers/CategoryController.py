@@ -18,7 +18,7 @@ class BackendCategory(rx.State):
 
     listAllCat: List[Category]
     
-    responseCat: list[str] = []
+    responseCat: List[str] = []
 
     catWithPosts: List[CategoryWithPost]
 
@@ -57,6 +57,7 @@ class BackendCategory(rx.State):
                     Auth.token.contains(auth.getAuthCookie())
                 )
             ).first()
+
         if res is not None:
             with rx.session() as session:
                 self.listAllCat = session.exec(
