@@ -18,7 +18,7 @@ class BackendCategory(rx.State):
 
     listAllCat: List[Category]
     
-    responseCat: List[str] = []
+    responseCat: list[str] = []
 
     catWithPosts: List[CategoryWithPost]
 
