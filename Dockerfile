@@ -41,4 +41,4 @@ RUN reflex db init
 RUN reflex db makemigrations
 RUN reflex db migrate 
 
-CMD reflex run --env prod --no-zip
+CMD reflex run --env prod
