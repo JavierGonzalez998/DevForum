@@ -17,7 +17,6 @@ class handleCat(rx.State):
     async def loadCat(self):
         cat = await self.get_state(BackendCategory)
         await cat.getAllListCat()
-        print(cat.responseCat)
         self.catList = cat.responseCat
             
         
