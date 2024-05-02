@@ -4,7 +4,7 @@ from dotenv import load_dotenv,find_dotenv
 
 
 railway_domain = "RAILWAY_PUBLIC_DOMAIN"
-
+db = "POSTGRE_DB_CONN"
 load_dotenv(find_dotenv())
 
 db = os.getenv("POSTGRE_DB_CONN")
@@ -15,7 +15,7 @@ class ReflextemplateConfig(rx.Config):
 config = ReflextemplateConfig(
     app_name="DevForum",
     deploy_url="devforum-production.up.railway.app",
-    db_url=f"postgresql+psycopg2://{db}",
+    db_url=f"postgresql+psycopg2://{os.environ[db]}",
     frontend_port=3000, # default frontend port
     backend_port=8000, # default backend port
     # use https and the railway public domain with a backend route if available, otherwise default to a local address
