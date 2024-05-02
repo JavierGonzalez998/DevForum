@@ -21,6 +21,7 @@ RUN apt-get update -y
 RUN apt-get upgrade
 RUN yes yes |apt-get install unzip
 
+ENV POSTGRE_DB_CONN "postgres:msemSBRKuEuguWFvsMDsqczpUBGGqCGn@viaduct.proxy.rlwy.net:41996/railway"
 #Installing Python
 RUN apt-get update && apt-get install -y \
     python3.8 \
