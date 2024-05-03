@@ -44,7 +44,7 @@ def index() -> rx.Component:
             backgroundSize="auto",
            paddingTop="1rem"
         ),
-        on_mount=HandleCategory.loadCat,
+        on_mount=lambda: HandleCategory.loadCat(),
         gap="0",
         height="100vh",   
     )

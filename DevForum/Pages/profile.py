@@ -204,7 +204,7 @@ def profile() -> rx.Component:
         ),
         width="100%",
         height="100%",
-        on_mount=userData.getUserData
+        on_mount=lambda: userData.getUserData()
     )
 
 def posts() -> rx.Component:
@@ -232,7 +232,7 @@ def posts() -> rx.Component:
                     ),
                 ),
                 rx.table.body(
-                    rx.foreach(ManagePosts.postListTable, lambda post: ListPosts(post))
+                    rx.foreach(getUserPost.userPosts, lambda post: ListPosts(post))
                 ),
                 width="100%"
             ),

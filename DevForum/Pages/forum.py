@@ -65,6 +65,6 @@ def index() -> rx.Component:
         gap="0",
         width="100vw",
         height="100vh",
-        on_mount=[HandleRankPost.loadPosts, UserCookieStates.LoadCookie]   
+        on_mount=[lambda: HandleRankPost.loadPosts(), lambda: UserCookieStates.LoadCookie()]   
     )
 

@@ -4,6 +4,7 @@ from DevForum.States.UserCookies import userCookie
 from DevForum.Backend.Models.Auth import Auth
 from DevForum.States.UserCookies import userCookie
 from DevForum.utils.utils import RegisterencryptPass, LoginCheckPassword
+import time
 import jwt
 import datetime
 
@@ -33,7 +34,6 @@ class userAuth(rx.State):
                     token = session.exec(
                         Auth().select().where(Auth.user_id == int(self.response.userId))
                     ).first()
-                    print(token)
                     if token is not None:
                         session.delete(token)
                     else:
@@ -61,23 +61,31 @@ class userData(rx.State):
     async def registerUser(self) -> User:
         try:
             with rx.session() as session:
-                session.add(
-                    User(
-                        username=self.username,
-                        email= self.mail,
-                        passwrd= RegisterencryptPass(self.passwrd),
-                        role_id = 2,
-                        profileimg=self.imgPhoto
+                res = session.exec(
+                    User.select().where(User.email.contains(self.mail))
+                ).first
+            if res is None:
+                with rx.session() as session:
+                    session.add(
+                        User(
+                            username=self.username,
+                            email= self.mail,
+                            passwrd= RegisterencryptPass(self.passwrd),
+                            role_id = 2,
+                            profileimg=self.imgPhoto
 
+                        )
                     )
-                )
-                session.commit()
-            
-            return True
+                    session.commit()
+
+                return True
+            else:
+                return False
         except():
             return False     
 
     async def getUserData(self) -> User:
+        time.sleep(2)
         auth = await self.get_state(userCookie)
         with rx.session() as session:
             res = session.exec(
@@ -135,12 +143,20 @@ class userData(rx.State):
     async def Logout(self) -> bool:
         auth = await self.get_state(userCookie)
         with rx.session() as session:
-            response = session.exec(
+            user = session.exec(
                 Auth.select().where(
-                    Auth.token == auth.getAuthCookie()
+                    Auth.token.contains(auth.getAuthCookie())
                 )
             ).first()
-            session.delete(response)
-            session.commit()
+            if user is not None:
+                response = session.exec(
+                    Auth.select().where(
+                        Auth.user_id == user.user_id
+                    )
+                ).all()
+                if response is not None:
+                    for i in response:
+                        session.delete(i)
+                        session.commit()
         auth.Logout()
         return True

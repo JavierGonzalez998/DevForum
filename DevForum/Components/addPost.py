@@ -17,7 +17,6 @@ class handleCat(rx.State):
     async def loadCat(self):
         cat = await self.get_state(BackendCategory)
         await cat.getAllListCat()
-        print(cat.responseCat)
         self.catList = cat.responseCat
             
         
@@ -103,5 +102,5 @@ def addPost() -> rx.Component:
                 justify="end",
             ),
         ),
-        on_mount=handleCat.loadCat
+        on_mount=lambda:handleCat.loadCat()
     )

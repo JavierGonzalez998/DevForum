@@ -38,7 +38,7 @@ def roles() -> rx.Component:
             paddingTop="2rem"
         ),
         width="100%",
-        on_mount= HandleRoles.loadRoles
+        on_mount= lambda: HandleRoles.loadRoles()
     )
 
 def ListPosts(role: model):

@@ -7,7 +7,7 @@ providers = ['python']
     NPM_CONFIG_UPDATE_NOTIFIER = 'false' # the update check is relatively useless in a production environment
     NPM_CONFIG_FUND = 'false' # the fund notification is also relatively useless in a production environment
     PIP_DISABLE_PIP_VERSION_CHECK = '1' # the update check is relatively useless in a production environment
-
+    NIXPACKS_PYTHON_VERSION = '3.11'
 # default setup phase
 [phases.setup]
     nixPkgs = ['...', 'unzip', 'parallel'] # install unzip because reflex needs it, and install parallel to run the frontend and backend at the same time

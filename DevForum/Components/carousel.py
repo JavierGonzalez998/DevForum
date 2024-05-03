@@ -12,7 +12,7 @@ def Carousel() -> rx.Component:
     return rx.center(
         rx.grid(
             rx.foreach(getUserPost.topPost, lambda post: Post(post)),
-            on_mount=handlePostIndex.loadPosts,
+            on_mount=lambda: handlePostIndex.loadPosts(),
             gap="1rem",
             columns="5",
             spacing="2",

@@ -85,7 +85,7 @@ def editPost(postId):
                 ),
                 direction="column",
                 spacing="3",
-                on_mount=EditPostClass.loadCatList
+                on_mount=lambda: EditPostClass.loadCatList()
             ),
             rx.flex(
                 rx.dialog.close(
