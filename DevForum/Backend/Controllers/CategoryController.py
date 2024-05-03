@@ -66,7 +66,6 @@ class BackendCategory(rx.State):
             del self.responseCat[:]
             for i in self.listAllCat:
                 self.responseCat.append(i.name)
-            print(f"posts: {self.responseCat}")
     async def addCat(self):
         auth = await self.get_state(userCookie)
         with rx.session() as session:

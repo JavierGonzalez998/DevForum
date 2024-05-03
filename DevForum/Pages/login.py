@@ -35,6 +35,12 @@ def index() -> rx.Component:
     return rx.vstack(
         navbar(),
         rx.box(
+            rx.callout(
+                "Mensaje del dev: Hice algunos cambios en la base de datos y arreglé algunas funciones. Quienes tengan una cuenta creada entre 02/05 y 03/05, por favor registrarse nuevamente. Disculpe los inconvenientes ♥",
+                icon="info",
+                color_scheme="yellow",
+                variant="outline"
+            ),
             rx.center(
                 rx.vstack(
                     rx.box(
@@ -154,10 +160,11 @@ class sumbitRegister(rx.State):
     async def updateUser(self):
         user = await self.get_state(userData)
         response = await user.registerUser()
-        if response:
+        if response == True:
             return LoginState.setLoginSection()
         else:
-            validateRegisterPassword.setErrorUpdate(True)
+            print("es false")
+            validateRegisterPassword.errorUpdate = True
 
 def registerComponent() -> rx.Component:
     return rx.vstack(

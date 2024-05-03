@@ -69,7 +69,7 @@ class getUserPost(rx.State):
             ).first()
             aux = session.exec(
                 sqlalchemy.text(
-                    f'''select p."postId", p.user_id , p."desc" ,p."content" ,c."name" , p.posted_at  from post p inner join category c on p.cat_id = c."catId" where c."catId" = {aux.catId} order by p.posted_at desc c'''
+                    f'''select p."postId", p.title, p.user_id , p."desc" ,p."content" ,c."name" , p.posted_at  from post p inner join category c on p.cat_id = c."catId" where c."catId" = {aux.catId} order by p.posted_at desc'''
                 )
             )
             del self.userPosts[:]
@@ -86,19 +86,22 @@ class getUserPost(rx.State):
                     Auth.token.contains(auth.getAuthCookie())
                 )
             ).first()
+        print(res)
         if res is not None:    
             with rx.session() as session:
-                aux = session.exec(
+                stmt = f'''select p."postId" , p.title , p."desc" , p."content" , c."name" , p.posted_at from post p inner join category c on p."cat_id" = c."catId" WHERE p."user_id" = {str(res.user_id)} '''
+                response= session.exec(
                     sqlalchemy.text(
-                    '''select p."postId" , p.title , p."desc" , p."content" , c."name" , p.posted_at from post p inner join category c on p."postId" = c."catId" '''
+                        stmt
                     )
                 ).all()
-                print(aux)
-                del self.userPosts[:]
-                for row in aux:
-                    row_as_dict = row._mapping
-                    res = userPostDTO(postId=row_as_dict["postId"],title=row_as_dict["title"], cat=row_as_dict["name"], desc=row_as_dict["desc"], content=row_as_dict["content"], posted_at=str(row_as_dict["posted_at"]))
-                    self.userPosts.append(res)
+                if response is not None:
+                    print(response)
+                    del self.userPosts[:]
+                    for row in response:
+                        row_as_dict = row._mapping
+                        res = userPostDTO(postId=row_as_dict["postId"],title=row_as_dict["title"], cat=row_as_dict["name"], desc=row_as_dict["desc"], content=row_as_dict["content"], posted_at=str(row_as_dict["posted_at"]))
+                        self.userPosts.append(res)
                     
     async def loadPost(self, postId:int):
         auth = await self.get_state(userCookie)
@@ -203,17 +206,19 @@ class getUserPost(rx.State):
     
     async def getPostDetail(self, idPost):
         with rx.session() as session:
+            stmt = f'''select p.postId , p.title , p."desc" , p."content" , c."name" as cat, u.username, p.posted_at , p.updated_at  from post p inner join category c on c."catId" = p."cat_id" inner join "user" u on u."userId" =p."user_id" where p."postId" =  {str(idPost)} '''
+            print(stmt)
             aux = session.exec(
                 sqlalchemy.text(
-                f'''select p."postId" , p.title , p."desc" , p."content" , c."name" as cat, u.username, p.posted_at , p.updated_at  from post p inner join category c on c."catId" = p."postId" inner join "user" u on u."userId" =p."postId" where p."postId" =  {str(idPost)} '''
+                    stmt
                 )
             ).first()
-            
-            res = DTOPostDetail(postId=aux.postId,title=aux.title, cat=aux.cat,username=aux.username,updated_at=aux.updated_at,desc=aux.desc, content=aux.content, posted_at=aux.posted_at, comments=[])
+            if aux is not None:
+                res = DTOPostDetail(postId=aux.postId,title=aux.title, cat=aux.cat,username=aux.username,updated_at=aux.updated_at,desc=aux.desc, content=aux.content, posted_at=aux.posted_at, comments=[])
 
-            comm = session.exec(
-                Comment.select().where(Comment.post_id.contains(idPost))
-            ).all()
-            res.comments = comm
-            
-            self.detailPost = res
+                comm = session.exec(
+                    Comment.select().where(Comment.post_id.contains(idPost))
+                ).all()
+                res.comments = comm
+
+                self.detailPost = res

@@ -232,14 +232,14 @@ def posts() -> rx.Component:
                     ),
                 ),
                 rx.table.body(
-                    rx.foreach(ManagePosts.postListTable, lambda post: ListPosts(post))
+                    rx.foreach(getUserPost.userPosts, lambda post: ListPosts(post))
                 ),
                 width="100%"
             ),
             paddingTop="2rem"
         ),
         width="100%",
-        on_mount= lambda: ManagePosts.getAllUserPost()
+        on_mount= ManagePosts.getAllUserPost
     )
 
 def ListPosts(post: userPostDTO) -> rx.Component:   
