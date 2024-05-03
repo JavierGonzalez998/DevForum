@@ -1,5 +1,5 @@
 # default to the python provider
-providers = ['python']
+providers = ['python3.9']
 
 # set up some variables to minimize annoyance
 [variables]
