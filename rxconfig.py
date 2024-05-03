@@ -5,7 +5,7 @@ import os
 env="PROD"
 
 railway_domain = "RAILWAY_PUBLIC_DOMAIN"
-db = "postgres:admin12345@152.173.9.111:5432/postgres" if os.environ.get("DATABASE_URL") is None else os.environ.get("shared.DATABASE_URL")
+db = "postgres:admin12345@152.173.9.111:5432/postgres" if os.environ.get("DATABASE_URL") is None else os.environ.get("DATABASE_URL")
 
 val = db if env == "PROD" else "postgres:admin12345@localhost:5432/postgres"
 
