@@ -63,7 +63,7 @@ def index() -> rx.Component:
                     gap="2rem"
                 ),
                 rx.box(
-                    rx.image(src="./aboutMe.jpg", width="100%", objectFit="cover"),
+                    rx.image(src="/aboutme.jpg", width="100%", objectFit="cover"),
                     width="25rem"
                 ),
                 gap="5em",

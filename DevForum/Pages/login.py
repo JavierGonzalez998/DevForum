@@ -2,7 +2,8 @@ import reflex as rx
 from DevForum.Components.navbar import navbar
 from DevForum.Backend.Controllers.UserController import userAuth
 from DevForum.Backend.Controllers.UserController import userData
-
+from DevForum.Components.loading import Loading
+from DevForum.States.LoadingState import LoadingState
 class FormState(rx.State):
     form_data: dict = {}
 
@@ -20,19 +21,24 @@ class LoginState(rx.State):
         self.loginValidation = state
 
 class LoginBackend(rx.State):
+    loading:bool = False
 
     async def setLogin(self):
+        self.loading = True
         state = await self.get_state(userAuth)
-
+        loading = await self.get_state(LoadingState)
         await state.LoginUser()
         if state.response is not None:
             LoginState.setLoginValidation(False)
+            loading.Loading = False
             return rx.redirect("/profile")
         else:
+           loading.Loading = False
            return LoginState.setLoginValidation(True)
  
 def index() -> rx.Component:
     return rx.vstack(
+        Loading(LoadingState.Loading),
         navbar(),
         rx.box(
             rx.callout(

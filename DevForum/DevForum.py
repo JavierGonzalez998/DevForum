@@ -13,6 +13,7 @@ from DevForum.Pages.searchPost import index as Search,HandlePostState
 app = rx.App(stylesheets=[
         "/animate.min.css",  # This path is relative to assets/
         "/main.css",
+        "/loading.css"
     ])
 
 

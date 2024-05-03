@@ -4,6 +4,7 @@ from DevForum.States.UserCookies import userCookie
 from DevForum.Backend.Models.Auth import Auth
 from DevForum.States.UserCookies import userCookie
 from DevForum.utils.utils import RegisterencryptPass, LoginCheckPassword
+from DevForum.States.LoadingState import LoadingState
 import time
 import jwt
 import datetime
@@ -63,7 +64,7 @@ class userData(rx.State):
             with rx.session() as session:
                 res = session.exec(
                     User.select().where(User.email.contains(self.mail))
-                ).first
+                ).first()
             if res is None:
                 with rx.session() as session:
                     session.add(
@@ -160,3 +161,16 @@ class userData(rx.State):
                         session.commit()
         auth.Logout()
         return True
+
+    async def isLogged(self) -> bool:
+        auth = await self.get_state(userCookie)
+        with rx.session() as session:
+            user = session.exec(
+                Auth.select().where(
+                    Auth.token.contains(auth.getAuthCookie())
+                )
+            ).first()
+        if user is not None:
+            return True
+        else:
+            return False

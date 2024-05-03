@@ -86,7 +86,6 @@ class getUserPost(rx.State):
                     Auth.token.contains(auth.getAuthCookie())
                 )
             ).first()
-        print(res)
         if res is not None:    
             with rx.session() as session:
                 stmt = f'''select p."postId" , p.title , p."desc" , p."content" , c."name" , p.posted_at from post p inner join category c on p."cat_id" = c."catId" WHERE p."user_id" = {str(res.user_id)} '''
@@ -96,7 +95,6 @@ class getUserPost(rx.State):
                     )
                 ).all()
                 if response is not None:
-                    print(response)
                     del self.userPosts[:]
                     for row in response:
                         row_as_dict = row._mapping

@@ -14,11 +14,6 @@ class handleCat(rx.State):
     catList: List[str] = []
     selected:str
 
-    async def loadCat(self):
-        cat = await self.get_state(BackendCategory)
-        await cat.getAllListCat()
-        self.catList = cat.responseCat
-            
         
 def addPost() -> rx.Component:
     return rx.dialog.root(
@@ -102,5 +97,5 @@ def addPost() -> rx.Component:
                 justify="end",
             ),
         ),
-        on_mount=lambda:handleCat.loadCat()
+        on_mount=BackendCategory.getAllListCat
     )

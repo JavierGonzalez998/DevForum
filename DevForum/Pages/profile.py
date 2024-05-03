@@ -7,6 +7,8 @@ from DevForum.Components.categories import cat
 from DevForum.Components.roles import roles
 from DevForum.Backend.Controllers.UserController import userData
 from DevForum.Backend.Controllers.PostController import getUserPost, userPostDTO
+from DevForum.Components.loading import Loading
+from DevForum.States.LoadingState import LoadingState
 from typing import List
 
 import base64
@@ -59,15 +61,28 @@ class sumbitChange(rx.State):
 
 class ManagePosts(rx.State):
     postListTable:List[userPostDTO]
-
+    loading:bool = False
     async def getAllUserPost(self):
+        loading = await self.get_state(LoadingState)
+        loading.Loading = True
         posts = await self.get_state(getUserPost)
         await posts.getUserPosts()
+        loading.Loading = False
+        self.loading = False
         self.postListTable = posts.userPosts
+        
 
+class ManageSession(rx.State):
+
+    async def isLogged(self):
+        user = await self.get_state(userData)
+        response = await user.isLogged()
+        if response == False:
+            return rx.redirect("/")
 
 def index() -> rx.Component:
     return rx.vstack(
+        Loading(LoadingState.Loading),
         navbar(),
         rx.container(
             rx.vstack(
@@ -204,7 +219,7 @@ def profile() -> rx.Component:
         ),
         width="100%",
         height="100%",
-        on_mount=lambda: userData.getUserData()
+        on_mount=[lambda: userData.getUserData(), ManageSession.isLogged]
     )
 
 def posts() -> rx.Component:

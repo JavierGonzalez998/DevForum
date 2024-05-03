@@ -31,6 +31,7 @@ class getUser(rx.State):
         await user.getUserData()
         self.set_username(user.username)
         self.set_imgPhoto(user.imgPhoto)
+    
 
 def display_color(link: List):
     return rx.box(rx.text(link[0], on_click=rx.redirect(link[1]), size="5", weight="regular"), cursor="pointer", )
