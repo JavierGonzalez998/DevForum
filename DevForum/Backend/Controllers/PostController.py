@@ -40,7 +40,7 @@ class getUserPost(rx.State):
         with rx.session() as session:
             aux = session.exec(
                 sqlalchemy.text(
-                    'select p."postId", p.title, p."desc" , p."content" , p.posted_at , c."name" , u.username , count(c2."commentId") from post p inner join category c  on c."catId"  = p.cat_id inner join "user" u on u."userId" = p.user_id inner join  "comment" c2 on c2.post_id  = p."postId" group by p."postId", c."name" , u.username  order by count(c2."commentId") desc'
+                    'select p."postId", p.title, p."desc" , p."content" , p.posted_at , c."name" , u.username , count(c2."commentId") as "countComment" from post p inner join category c  on c."catId"  = p.cat_id inner join "user" u on u."userId" = p.user_id inner join  "comment" c2 on c2.post_id  = p."postId" group by p."postId", c."name" , u.username  order by count(c2."commentId") desc'
                 )
             )
             del self.topPost[:]
@@ -90,13 +90,14 @@ class getUserPost(rx.State):
             with rx.session() as session:
                 aux = session.exec(
                     sqlalchemy.text(
-                    '''select p."postId" , p.title , p."desc" , p."content" , c."name"  from post p inner join category c on p."postId" = c."catId" '''
+                    '''select p."postId" , p.title , p."desc" , p."content" , c."name" , p.posted_at from post p inner join category c on p."postId" = c."catId" '''
                     )
                 ).all()
+                print(aux)
                 del self.userPosts[:]
                 for row in aux:
                     row_as_dict = row._mapping
-                    res = userPostDTO(postId=row_as_dict["postId"],title=row_as_dict["title"], cat=row_as_dict["name"], desc=row_as_dict["desc"], content=row_as_dict["content"], posted_at=row_as_dict["posted_at"])
+                    res = userPostDTO(postId=row_as_dict["postId"],title=row_as_dict["title"], cat=row_as_dict["name"], desc=row_as_dict["desc"], content=row_as_dict["content"], posted_at=str(row_as_dict["posted_at"]))
                     self.userPosts.append(res)
                     
     async def loadPost(self, postId:int):
@@ -114,6 +115,7 @@ class getUserPost(rx.State):
                         Post.postId == postId
                     )
                 ).first()
+            print(aux)
             if aux is not None:
                 self.title = aux.title
                 self.desc = aux.desc

@@ -46,7 +46,7 @@ def index() -> rx.Component:
             backgroundSize="auto",
            paddingTop="1rem"
         ),
-        on_mount=[HandlePostState.getItemLink, lambda: HandlePostState.getSearch()],
+        on_mount=[lambda: HandlePostState.getItemLink(), lambda: HandlePostState.getSearch()],
         gap="0",
         height="100vh",   
     )

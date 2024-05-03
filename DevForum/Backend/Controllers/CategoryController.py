@@ -26,7 +26,7 @@ class BackendCategory(rx.State):
         with rx.session() as session:
             aux = session.exec(
                 sqlalchemy.text(
-                    '''select c."catId" , c."name" , count(p."postId") as postCount  from category c inner join post p on p.cat_id =c."catId" group by p."postId", c."catId" '''
+                    '''select c."catId" , c."name" , count(p."postId") as "postCount"  from category c inner join post p on p.cat_id =c."catId" group by p."postId", c."catId" '''
                 )
             ).all()
             del self.catWithPosts[:]
@@ -66,7 +66,7 @@ class BackendCategory(rx.State):
             del self.responseCat[:]
             for i in self.listAllCat:
                 self.responseCat.append(i.name)
-
+            print(f"posts: {self.responseCat}")
     async def addCat(self):
         auth = await self.get_state(userCookie)
         with rx.session() as session:

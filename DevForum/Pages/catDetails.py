@@ -63,7 +63,7 @@ def index() -> rx.Component:
             backgroundSize="auto",
            paddingTop="1rem"
         ),
-        on_mount=[HandleCategoryState.loadCat, HandleCategoryState.getItemLink, HandleCategoryState.loadPosts],
+        on_mount=[lambda: HandleCategoryState.loadCat(), lambda: HandleCategoryState.getItemLink(), lambda: HandleCategoryState.loadPosts()],
         gap="0",
         height="100vh",   
     )

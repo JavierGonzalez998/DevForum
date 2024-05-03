@@ -102,5 +102,5 @@ def addPost() -> rx.Component:
                 justify="end",
             ),
         ),
-        on_mount=handleCat.loadCat
+        on_mount=lambda:handleCat.loadCat()
     )

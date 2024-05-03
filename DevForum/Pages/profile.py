@@ -204,7 +204,7 @@ def profile() -> rx.Component:
         ),
         width="100%",
         height="100%",
-        on_mount=userData.getUserData
+        on_mount=lambda: userData.getUserData()
     )
 
 def posts() -> rx.Component:
@@ -239,7 +239,7 @@ def posts() -> rx.Component:
             paddingTop="2rem"
         ),
         width="100%",
-        on_mount= ManagePosts.getAllUserPost
+        on_mount= lambda: ManagePosts.getAllUserPost()
     )
 
 def ListPosts(post: userPostDTO) -> rx.Component:   

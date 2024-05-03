@@ -38,7 +38,7 @@ def cat() -> rx.Component:
             paddingTop="2rem"
         ),
         width="100%",
-        on_mount= HandleCat.loadCat
+        on_mount= lambda: HandleCat.loadCat()
     )
 
 def ListPosts(cat: Category):

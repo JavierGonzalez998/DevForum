@@ -87,7 +87,7 @@ def navbar() -> rx.Component:
         justifyContent="space-around",
         alignItems="center",
         zIndex="300",
-        on_mount=UserCookieState.LoadCookie
+        on_mount=lambda:UserCookieState.LoadCookie()
     )
 
 
@@ -96,7 +96,7 @@ def profileInfo():
     return rx.hstack(
         rx.image(src=rx.cond(getUser.imgPhoto == "", "/profile.jpg", getUser.imgPhoto), width="3rem", border_radius="100%"),
         rx.text(getUser.username, size="2", weight="light"),
-        on_mount=getUser.LoadData,
+        on_mount=lambda: getUser.LoadData(),
         width="5rem",
         gap="1rem",
         align="center"

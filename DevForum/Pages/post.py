@@ -101,7 +101,7 @@ def index() -> rx.Component:
         background="linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/programming.png');",
         backgroundSize="auto",
         height="100vh",
-        on_mount=[HandlePost.getItemLinkPost, HandlePost.getDetailPost, HandleComments.loadComments]   
+        on_mount=[lambda: HandlePost.getItemLinkPost(), lambda: HandlePost.getDetailPost(), lambda: HandleComments.loadComments()]   
     )
 
 def userCommentSection() -> rx.Component:
