@@ -18,7 +18,6 @@ class ReflextemplateConfig(rx.Config):
 
 config = ReflextemplateConfig(
     app_name="DevForum",
-    deploy_url="devforum-production.up.railway.app",
     db_url=conn,
     frontend_port=3000, # default frontend port
     backend_port=8000, # default backend port
