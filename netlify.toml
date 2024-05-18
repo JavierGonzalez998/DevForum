@@ -1,6 +1,6 @@
 [build]
   publish = "frontend/build"
-  command = "reflex build"
+  command = "reflex build --frontend"
 
 [context.production.environment]
   PYTHON_VERSION = "3.8"
