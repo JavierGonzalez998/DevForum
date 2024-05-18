@@ -25,5 +25,3 @@ app.add_page(profile, route="/profile")
 app.add_page(catDetail, route="/categories/[detail]")
 app.add_page(post, route="/post/[id]")
 app.add_page(Search, route="/search/[text]", on_load=[HandlePostState.getItemLink, HandlePostState.getSearch])
-#Backend
-app.api.add_api_route("/hello", hello)
