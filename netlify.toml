@@ -1,6 +1,6 @@
 [build]
-  publish = "frontend/build"
-  command = "reflex export --frontend-only --no-zip --loglevel debug"
+  publish = "public"
+  command = "sh build.sh"
 
 [context.production.environment]
   PYTHON_VERSION = "3.8"
